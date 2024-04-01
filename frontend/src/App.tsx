@@ -2,11 +2,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Blogs from "./pages/Blogs";
-import CreateBlog from "./pages/CreateBlog";
+import CreateBlog from "./pages/CreatePost";
 import Navbar from "./pages/Navbar";
+import Blog from "./pages/Blog";
+import { RecoilRoot } from "recoil";
 
-const isLogin = false;
-
+const isLogin = document.cookie;
 const router = createBrowserRouter([
   {
     path: "/signin",
@@ -19,25 +20,43 @@ const router = createBrowserRouter([
   {
     path: "/blogs",
     element: <>
-    <Navbar/>
-    <Blogs/>
-    </> 
+      <Navbar />
+      <Blogs />
+    </>
+  },
+  {
+    path: "/blog/:id",
+    element: <>
+      <Navbar />
+      <Blog />
+    </>
   },
   {
     path: "/create",
     element: <>
-      <Navbar/>
-      <CreateBlog/>
+      <Navbar />
+      <CreateBlog />
     </>
   },
   {
     path: "/*",
-    element: (!isLogin) ? <Signin /> : <Blogs />
+    element: (!isLogin)
+      ?
+      <Signin />
+      :
+      <>
+        <Navbar />
+        <Blogs />
+      </>
   }
 ])
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <RecoilRoot>
+      <RouterProvider router={router} />
+    </RecoilRoot>
+  )
 }
 
 export default App
